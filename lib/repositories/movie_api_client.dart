@@ -35,7 +35,17 @@ class MovieApiClient {
     Map<String, dynamic> res_data = json.decode(response.body);
     return res_data;
   }
-  static Future<List<int>> searchMovies(String title) async{
-    String url = "http://127.0.0.1:8000/api/search_movies?title=" + title.trim().replaceAll(' ', '%20');
+
+  static Future<List<int>> searchMovies(String title) async {
+    String url = "http://127.0.0.1:8000/api/search_movies?title=" +
+        title.trim().replaceAll(' ', '%20');
+    http.Response response = await http.get(url);
+
+    List<dynamic> data = json.decode(response.body);
+    List<int> listMovies = new List<int>();
+    for (var i = 0; i < data.length; i++) {
+      listMovies.add(data[i]['movie_id']);
+    }
+    return listMovies;
   }
 }
